@@ -18,7 +18,7 @@ class Userseeder extends Seeder
         //Création de l'administrateur
         User::create([
             'pseudo' => 'administrateur',
-            'password'=> Hash::make('Azerty123@'),
+            'password'=> Hash::make('Azerty88@'),
             'email' => 'admin@arinfo.fr',
             'email_verified_at' => now(),
             'departement_id' => '72',
@@ -29,7 +29,7 @@ class Userseeder extends Seeder
         //création d'un utilisateur de test
         User::create([
             'pseudo' => 'utilisateur',
-            'password'=> Hash::make('Azerty456@'),
+            'password'=> Hash::make('Azerty88@'),
             'email' => 'utilisateur@arinfo.fr',
             'email_verified_at' => now(),
             'departement_id' => '75',
