@@ -11,41 +11,68 @@ class UserController extends Controller
     // Fonction pour renvoyer la liste des utilisateurs
     public function index()
     {
+    //On récupère tous les utilisateurs
         $users = User::all();
-        return response()->json($users);
+    
+    //On retourne les utilisateurs en JSON
+        return response()->json([
+            'status' => true,
+            'message' => 'utilisateur récupérés avec succès',
+            'users' => $users
+        ]);
     }
 
     // Fonction pour sauvegarder un nouvel utilisateur
     public function store(Request $request)
     {
         $user = new User;
-        $user->name = $request->input('name');
+        $user->pseudo = $request->input('pseudo');
         $user->email = $request->input('email');
+        $user->departement_id = $request->input('departement');
+        $user->image = $request->input('image');
+        $user->password = $request->input('password');
         $user->save();
+
         return response()->json(['message' => 'Utilisateur ajouté avec succès']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
+    // Fonction pour récupérer les infos d'un utilisateur spécifique
+    public function show($id)
     {
-        //
+        $user = User::find($id);
+        if ($user) {
+            return response()->json($user);
+        } else {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $user)
+     // Fonction pour mettre à jour les informations d'un utilisateur
+    public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+        if ($user) {
+            $user->pseudo = $request->input('pseudo');
+            $user->email = $request->input('email');
+            $user->departement_id = $request->input('departement');
+            $user->image = $request->input('image');
+            $user->password = $request->input('password');
+            $user->save();
+            return response()->json(['message' => 'Utilisateur mis à jour avec succès']);
+        } else {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $user)
+     // Fonction pour supprimer un utilisateur
+
+    public function destroy($id)
     {
-        //
+        if ($user) {
+            $user->delete();
+            return response()->json(['message' => 'Utilisateur supprimé avec succès']);
+        } else {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
     }
 }
