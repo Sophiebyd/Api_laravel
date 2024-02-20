@@ -36,5 +36,8 @@ class Userseeder extends Seeder
             'remember_token' => Str::random(10),
             'role_id' => 1          
         ]);
+
+        //création de 8 users aléatoires
+        User::factory(8)->create();
     }
 }
