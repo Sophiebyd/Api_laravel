@@ -40,7 +40,8 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        if ($user) {
+
+        if ($user !== null) {
             return response()->json($user);
         } else {
             return response()->json(['message' => 'Utilisateur non trouvé'], 404);
@@ -51,7 +52,8 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
-        if ($user) {
+
+        if ($user !== null) {
             $user->pseudo = $request->input('pseudo');
             $user->email = $request->input('email');
             $user->departement_id = $request->input('departement');
@@ -68,11 +70,13 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        if ($user) {
+        $user = User::find($id);
+        
+        if ($user !== null) {
             $user->delete();
             return response()->json(['message' => 'Utilisateur supprimé avec succès']);
         } else {
             return response()->json(['message' => 'Utilisateur non trouvé'], 404);
         }
     }
-}
+};
