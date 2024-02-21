@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -26,6 +28,28 @@ class UserController extends Controller
     // Fonction pour sauvegarder un nouvel utilisateur
     public function store(Request $request)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'pseudo' => 'required|min:15|max:3000',
+                'email' => 'required|min:5|max:50',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
+                'password' => [
+                    'required', 'confirmed',
+                    Password::min(8) // minimum 8 caractères   
+                        ->mixedCase() // au moins 1 minuscule et une majuscule
+                        ->letters()  // au moins une lettre
+                        ->numbers() // au moins un chiffre
+                        ->symbols() // au moins un caractère spécial parmi ! @ # $ % ^ & * ?  
+                ],
+            ],
+        );
+
+        // renvoi d'un ou plusieurs messages d'erreur si champ(s) incorrect(s)
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
         $user = User::create([
             'pseudo' => $request->pseudo,
             'image' => $request->image,
@@ -53,6 +77,19 @@ class UserController extends Controller
     // Fonction pour mettre à jour les informations d'un utilisateur
     public function update(Request $request, User $user)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'pseudo' => 'required|min:15|max:3000',
+                'email' => 'required|min:5|max:50',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048'
+            ],
+        );
+
+        // renvoi d'un ou plusieurs messages d'erreur si champ(s) incorrect(s)
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
         $user->update($request->all());
         return response()->json([
             'status' => true,
@@ -62,7 +99,6 @@ class UserController extends Controller
     }
 
     // Fonction pour supprimer un utilisateur
-
     public function destroy(User $user)
     {
 
