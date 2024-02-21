@@ -5,16 +5,17 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     // Fonction pour renvoyer la liste des utilisateurs
     public function index()
     {
-    //On récupère tous les utilisateurs
+        //On récupère tous les utilisateurs
         $users = User::all();
-    
-    //On retourne les utilisateurs en JSON
+
+        //On retourne les utilisateurs en JSON
         return response()->json([
             'status' => true,
             'message' => 'utilisateur récupérés avec succès',
@@ -25,58 +26,51 @@ class UserController extends Controller
     // Fonction pour sauvegarder un nouvel utilisateur
     public function store(Request $request)
     {
-        $user = new User;
-        $user->pseudo = $request->input('pseudo');
-        $user->email = $request->input('email');
-        $user->departement_id = $request->input('departement');
-        $user->image = $request->input('image');
-        $user->password = $request->input('password');
-        $user->save();
+        $user = User::create([
+            'pseudo' => $request->pseudo,
+            'image' => $request->image,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
-        return response()->json(['message' => 'Utilisateur ajouté avec succès']);
+        return response()->json([
+            'message' => 'Utilisateur ajouté avec succès',
+            'status' => true,
+            'user' => $user,
+        ], 201);
     }
 
     // Fonction pour récupérer les infos d'un utilisateur spécifique
-    public function show($id)
+    public function show(User $user)
     {
-        $user = User::find($id);
-
-        if ($user !== null) {
-            return response()->json($user);
-        } else {
-            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
-        }
+        return response()->json([
+            'message' => 'Utilisateur trouvé',
+            'status' => true,
+            'user' => $user,
+        ]);
     }
 
-     // Fonction pour mettre à jour les informations d'un utilisateur
-    public function update(Request $request, $id)
+    // Fonction pour mettre à jour les informations d'un utilisateur
+    public function update(Request $request, User $user)
     {
-        $user = User::find($id);
-
-        if ($user !== null) {
-            $user->pseudo = $request->input('pseudo');
-            $user->email = $request->input('email');
-            $user->departement_id = $request->input('departement');
-            $user->image = $request->input('image');
-            $user->password = $request->input('password');
-            $user->save();
-            return response()->json(['message' => 'Utilisateur mis à jour avec succès']);
-        } else {
-            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
-        }
+        $user->update($request->all());
+        return response()->json([
+            'status' => true,
+            'user' => $user,
+            'message' => 'Utilisateur modifié',
+        ]);
     }
 
-     // Fonction pour supprimer un utilisateur
+    // Fonction pour supprimer un utilisateur
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::find($id);
-        
-        if ($user !== null) {
-            $user->delete();
-            return response()->json(['message' => 'Utilisateur supprimé avec succès']);
-        } else {
-            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
-        }
+
+        $user->delete();
+        return response()->json([
+            'status' => true,
+            'user' => $user,
+            'message' => 'Utilisateur supprimé',
+        ]);
     }
-};
+}

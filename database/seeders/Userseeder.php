@@ -21,7 +21,6 @@ class Userseeder extends Seeder
             'password'=> Hash::make('Azerty88@'),
             'email' => 'admin@arinfo.fr',
             'email_verified_at' => now(),
-            'departement_id' => '72',
             'remember_token' => Str::random(10),
             'role_id' => 2
         ]);
@@ -32,7 +31,6 @@ class Userseeder extends Seeder
             'password'=> Hash::make('Azerty88@'),
             'email' => 'utilisateur@arinfo.fr',
             'email_verified_at' => now(),
-            'departement_id' => '75',
             'remember_token' => Str::random(10),
             'role_id' => 1          
         ]);
