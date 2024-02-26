@@ -34,6 +34,8 @@ class CommentController extends Controller
             $request->all(),
             [
                 'content' => 'required|min:15|max:3000',
+                'user_id' => 'required',
+                'post_id' => 'required',
                 'tags' => 'required|min:5|max:50',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
             ],
@@ -49,6 +51,15 @@ class CommentController extends Controller
             'image' => $request->image,
             'tags' => $request->email,
         ]);
+
+        if ($request->image) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('images'), $imageName);
+            $comment->update([
+                'image' => $imageName
+            ]);
+        }
 
         return response()->json([
             'message' => 'Commentaire ajouté avec succès',
@@ -88,6 +99,16 @@ class CommentController extends Controller
             return response()->json($validator->errors(), 400);
         }
         $comment->update($request->all());
+
+        if ($request->image) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('images'), $imageName);
+            $comment->update([
+                'image' => $imageName
+            ]);
+        }
+
         return response()->json([
             'status' => true,
             'comment' => $comment,

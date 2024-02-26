@@ -47,10 +47,20 @@ class PostController extends Controller
 
         // Création d'une nouvelle instance de Post et sauvegarde dans la base de données
         $post = Post::create([
+            'user_id' => $request->user_id,
             'content' => $request->content,
             'image' => $request->image,
             'tags' => $request->tags,
         ]);
+
+        if ($request->image) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('images'), $imageName);
+            $post->update([
+                'image' => $imageName
+            ]);
+        }
 
         // Retourne une réponse JSON avec un message de succès, un statut et les détails du post nouvellement créé avec un code de statut 201
         return response()->json([
@@ -91,6 +101,16 @@ class PostController extends Controller
             return response()->json($validator->errors(), 400);
         }
         $post->update($request->all());
+
+        if ($request->image) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('images'), $imageName);
+            $post->update([
+                'image' => $imageName
+            ]);
+        }
+        
         return response()->json([
             'status' => true,
             'post' => $post,

@@ -55,6 +55,15 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        if ($request->image) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('images'), $imageName);
+            $user->update([
+                'image' => $imageName
+            ]);
+        }
+        
         return response()->json([
             'message' => 'Utilisateur ajouté avec succès',
             'status' => true,
@@ -89,6 +98,16 @@ class UserController extends Controller
             return response()->json($validator->errors(), 400);
         }
         $user->update($request->all());
+
+        if ($request->image) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('images'), $imageName);
+            $user->update([
+                'image' => $imageName
+            ]);
+        }
+
         return response()->json([
             'status' => true,
             'user' => $user,
