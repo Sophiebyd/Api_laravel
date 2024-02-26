@@ -28,14 +28,12 @@ class UserController extends Controller
     // Fonction pour sauvegarder un nouvel utilisateur
     public function store(Request $request)
     {
-        $validator = Validator::make(
-            $request->all(),
+        $validator = Validator::make($request->all(),
             [
                 'pseudo' => 'required|min:15|max:3000',
                 'email' => 'required|min:5|max:50',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
-                'password' => [
-                    'required', 'confirmed',
+                'password' => ['required', 'confirmed',
                     Password::min(8) // minimum 8 caractères   
                         ->mixedCase() // au moins 1 minuscule et une majuscule
                         ->letters()  // au moins une lettre
@@ -101,7 +99,6 @@ class UserController extends Controller
     // Fonction pour supprimer un utilisateur
     public function destroy(User $user)
     {
-
         $user->delete();
         return response()->json([
             'status' => true,
