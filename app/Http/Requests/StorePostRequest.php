@@ -28,4 +28,17 @@ class StorePostRequest extends FormRequest
             'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'content.required' => 'Le content est requis.',
+            'content.min' => 'Le content doit faire au moins 5 caractères.',
+            'content.max' => 'Le content ne doit pas dépasser 3000 caractères.',
+            'tags.required' => 'Le tag est requis.',
+            'tags.min' => 'Le tag ne doit pas dépasser 5 caractères.',
+            'tags.max' => 'Le tag ne doit pas dépasser 3000 caractères.',
+            'tags.string' => 'Le tag doit être une chaîne de caractères.',
+        ];
+    }
 }

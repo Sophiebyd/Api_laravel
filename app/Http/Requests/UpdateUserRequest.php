@@ -27,4 +27,18 @@ class UpdateUserRequest extends FormRequest
             'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'pseudo.min' => 'Le content doit faire au moins 2 caractères.',
+            'pseudo.max' => 'Le content ne doit pas dépasser 20 caractères.',
+            'pseudo.string' => 'Le pseudo doit être une chaîne de caractères.',
+            'pseudo.unique' => 'pseudo déjà utilisé.',
+            'email.min' => 'Le tag ne doit pas dépasser 5 caractères.',
+            'email.max' => 'Le tag ne doit pas dépasser 20 caractères.',
+            'email.email' => 'Email invalide.',
+            'email.unique' => 'email déjà utilisé.',
+        ];
+    }
 }
