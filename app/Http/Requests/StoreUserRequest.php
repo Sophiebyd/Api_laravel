@@ -23,8 +23,8 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'pseudo' => 'required|min:15|max:3000',
-            'email' => 'required|min:5|max:50',
+            'pseudo' => 'required|min:2|max:20',
+            'email' => 'required|min:5|max:20',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
             'password' => ['required', 'confirmed',
                 Password::min(8) // minimum 8 caractères   

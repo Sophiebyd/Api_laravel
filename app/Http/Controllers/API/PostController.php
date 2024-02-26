@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -26,32 +28,10 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        // Validation des données de la requête
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'content' => 'required|min:5|max:3000',
-                'tags' => 'required|min:5|max:3000',
-                'user_id' => 'required',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
-            ],
-        );
-
-        // Vérification des erreurs de validation
-        if ($validator->fails()) {
-            // Si la validation échoue, retourne les erreurs au format JSON avec un code de statut 400
-            return response()->json($validator->errors(), 400);
-        }
-
         // Création d'une nouvelle instance de Post et sauvegarde dans la base de données
-        $post = Post::create([
-            'user_id' => $request->user_id,
-            'content' => $request->content,
-            'image' => $request->image,
-            'tags' => $request->tags,
-        ]);
+        $post = Post::create( $request->all());
 
         if ($request->image) {
             $image = $request->file('image');
@@ -85,21 +65,8 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'content' => 'required|min:15|max:3000',
-                'tags' => 'required|min:5|max:50',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048'
-            ],
-        );
-
-        // renvoi d'un ou plusieurs messages d'erreur si champ(s) incorrect(s)
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
         $post->update($request->all());
 
         if ($request->image) {

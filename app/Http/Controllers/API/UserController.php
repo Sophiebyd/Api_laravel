@@ -4,10 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -61,21 +60,8 @@ class UserController extends Controller
     }
 
     // Fonction pour mettre à jour les informations d'un utilisateur
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'pseudo' => 'required|min:15|max:3000',
-                'email' => 'required|min:5|max:50',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048'
-            ],
-        );
-
-        // renvoi d'un ou plusieurs messages d'erreur si champ(s) incorrect(s)
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
         $user->update($request->all());
 
         if ($request->image) {
