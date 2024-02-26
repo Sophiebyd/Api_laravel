@@ -46,11 +46,7 @@ class CommentController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        $comment = Comment::create([
-            'content' => $request->pseudo,
-            'image' => $request->image,
-            'tags' => $request->email,
-        ]);
+        $comment = Comment::create( $request->all());
 
         if ($request->image) {
             $image = $request->file('image');
@@ -98,6 +94,7 @@ class CommentController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
+        
         $comment->update($request->all());
 
         if ($request->image) {

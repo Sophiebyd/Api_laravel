@@ -9,6 +9,12 @@ class Post extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'content',
+        'tags',
+        'user_id',
+        'image',
+    ];
     // charge automatiquement l'utilisateur à chaque fois que je récupère un message
     protected $with = ['user'];
 
