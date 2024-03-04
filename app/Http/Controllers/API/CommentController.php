@@ -79,7 +79,7 @@ class CommentController extends Controller
         return response()->json([
             'status' => true,
             'comment' => $comment,
-            'message' => 'Commantaire modifié',
+            'message' => 'Commentaire modifié',
         ]);
     }
 
