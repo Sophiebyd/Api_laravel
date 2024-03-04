@@ -38,7 +38,7 @@ class StoreCommentRequest extends FormRequest
             'content.max' => 'Le content ne doit pas dépasser 3000 caractères.',
             'tags.required' => 'Le tag est requis.',
             'tags.min' => 'Le tag ne doit pas dépasser 5 caractères.',
-            'tags.max' => 'Le tag ne doit pas dépasser 3000 caractères.',
+            'tags.max' => 'Le tag ne doit pas dépasser 20 caractères.',
             'tags.string' => 'Le tag doit être une chaîne de caractères.',
         ];  
     }
