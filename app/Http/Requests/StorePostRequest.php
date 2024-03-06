@@ -23,7 +23,7 @@ class StorePostRequest extends FormRequest
     {
         return [
             'content' => 'required|min:5|max:3000',
-            'tags' => 'required|min:5|max:3000',
+            'tags' => 'required|min:5|max:50',
             'user_id' => 'required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
         ];
@@ -32,13 +32,13 @@ class StorePostRequest extends FormRequest
     public function messages()
     {
         return [
-            'content.required' => 'Le content est requis.',
-            'content.min' => 'Le content doit faire au moins 5 caractères.',
-            'content.max' => 'Le content ne doit pas dépasser 3000 caractères.',
-            'tags.required' => 'Le tag est requis.',
-            'tags.min' => 'Le tag ne doit pas dépasser 5 caractères.',
-            'tags.max' => 'Le tag ne doit pas dépasser 3000 caractères.',
-            'tags.string' => 'Le tag doit être une chaîne de caractères.',
+            'content.required' => 'Le contenu est requis.',
+            'content.min' => 'Le contenu doit faire au moins 5 caractères.',
+            'content.max' => 'Le contenu ne doit pas dépasser 3000 caractères.',
+            'tags.required' => 'Le tags est requis.',
+            'tags.min' => 'Le tags doit faire plus de 5 caractères.',
+            'tags.max' => 'Le tags ne doit pas dépasser 50 caractères.',
+            'tags.string' => 'Le tags doit être une chaîne de caractères.',
         ];
     }
 }

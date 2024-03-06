@@ -39,12 +39,12 @@ class UpdateUserRequest extends FormRequest
     public function messages()
     {
         return [
-            'pseudo.min' => 'Le content doit faire au moins 2 caractères.',
-            'pseudo.max' => 'Le content ne doit pas dépasser 20 caractères.',
+            'pseudo.min' => 'Le contenu doit faire au moins 2 caractères.',
+            'pseudo.max' => 'Le contenu ne doit pas dépasser 20 caractères.',
             'pseudo.string' => 'Le pseudo doit être une chaîne de caractères.',
             'pseudo.unique' => 'pseudo déjà utilisé.',
-            'email.min' => 'Le tag ne doit pas dépasser 5 caractères.',
-            'email.max' => 'Le tag ne doit pas dépasser 20 caractères.',
+            'email.min' => 'Le tags doit faire plus de 5 caractères.',
+            'email.max' => 'Le tags ne doit pas dépasser 50 caractères.',
             'email.email' => 'Email invalide.',
             'email.unique' => 'email déjà utilisé.',
         ];
